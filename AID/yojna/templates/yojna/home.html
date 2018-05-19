@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}
+	yojna
+{% endblock %}
+
+{% block head %}
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link href={% static 'yojna/style_home.css' %} rel="stylesheet" type="text/css">
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block body %}
+<body id="main_role">
+<center><h1 id="heading">AID</h1></center>
+<div class="container">	
+	
+	<div class="card-columns">
+ 		{% for field in fields %}
+ 		<a href={{ field.id }}>
+ 			<div class="card spin">
+    			<div class="card-body">
+      				<h5 class="card-title">{{ field.field_name }}</h5>
+      				<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional conten to show that equal height action.</p>
+	      			<p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    			</div>
+  			</div>
+  		</a>
+  		{% endfor %}
+
+	</div>
+</div>
+
+</body>
+
+{% endblock %}

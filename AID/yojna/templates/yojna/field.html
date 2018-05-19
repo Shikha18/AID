@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}
+	yojna
+{% endblock %}
+
+{% block head %}
+	<!-- Latest compiled and minified CSS -->
+	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+	<link href={% static 'yojna/style_field.css' %} rel="stylesheet" type="text/css">
+	
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+	
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block body %}
+
+<body id="main_role">
+<center><h1 id="heading">AID</h1></center>
+<div class="container">	
+
+	<select class="selectpicker option_menu" title="Age" id="age">
+  		<option>Select Age</option>
+      {% for i in loop_times %}
+  		  <option>{{ forloop.counter }}</option>
+      {% endfor %}
+	</select>
+
+	<select class="selectpicker option_menu" title="Salary" id="salary">
+  		<option>Select your Income</option>
+  		<option>Mustard</option>
+  		<option>Ketchup</option>
+  		<option>Kite</option>
+  		<option>Kutta</option>
+  		<option>Relish</option>
+	</select>
+
+	<select class="selectpicker option_menu" title="State" id="state">
+  		<option>Select Your State</option>	
+  		{% for state in states %}
+        <option>{{ state.0 }}</option>
+      {% endfor %}
+	</select>
+
+	<select class="selectpicker option_menu" title="Problem" id="problem">
+  		<option>Select Your Problem</option>
+  		{% for problem in problems %}
+        <option>{{ problem.0 }}</option>
+      {% endfor %}
+	</select>
+  <br><br><br>
+  <center><div id="loading"></div></center>
+  <div class="container-fluid" id="set" >
+  {% for yojna in yojnas %}
+<div class="card">
+  <h5 class="card-header">{{ yojna.problem_id }}</h5>
+  <div class="card-body">
+    <h5 class="card-title">{{ yojna.yojna_id.name }}</h5>
+    <p class="card-text">{{ yojna.yojna_id.desc|safe }}</p>
+  </div>
+</div>
+<br><br>
+{% endfor %}
+</div>
+
+<script>
+    $(document).ready(function(){
+      $("select").click(function(){
+        $.ajax({
+          url: '/ajax/',
+          data: {
+            'age': $('#age').val(),
+            'state':$('#state').val(),
+            'problem':$('#problem').val(),
+            'salary':$('#salary').val(),
+          },
+          dataType: 'Json',
+          beforeSend:function(){
+              document.getElementById("set").innerHTML ="";
+              $('#loading').addClass('loader');    
+          },
+          success: function (data) {
+            console.log(data);
+            var output="<table><thead><tr><th><strong>SNo</strong></th><th><strong>User</strong></th><th><strong>Payment</strong></th></thead><tbody>";
+            for (var i in data)
+            {
+                console.log(data[1]);
+                for(k in i)
+                {
+                  console.log(data[i][0]);
+                  output+="<tr><td>"+data[i].desc+"</td><td>"+data[i].user_name_id+"</td><td>"+data[i].payment_user+"</td></tr>";
+                }
+            }
+              output+="</tbody></table>";
+              document.getElementById("set").innerHTML =output;
+              $('table').addClass('table');
+              $('thead').addClass('mdb-color darken-3');
+            $('#loading').removeClass('loader');
+          }
+      });
+    });
+  });  
+</script>
+</div>
+
+</body>
+<!-- Latest compiled and minified CSS -->
+
+
+{% endblock %}
